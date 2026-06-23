@@ -1,3 +1,15 @@
+# Transaction Processing & Analysis Engine
+
+A FastAPI and Celery-based backend for asynchronously parsing, cleaning, and analyzing CSV transaction records, detecting anomalies, and generating category insights via LLM.
+
+## High-Level Design
+
+Below is the system architecture diagram illustrating the workflow between the API, worker, database, cache, and LLM:
+
+![High-Level Design](docs/hll-design.png)
+
+---
+
 ## Setup & Running Guide
 This spins up the FastAPI API server, Celery Worker, PostgreSQL database, and Redis broker automatically.
 
