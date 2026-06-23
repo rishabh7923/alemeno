@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: assignment
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+    - "6379:6379"
+
+  api:
+    build: .
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - uploads-data:/app/uploads
+
+  worker:
+    build: .
+    command: celery -A app.core.celery worker --loglevel=info
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - uploads-data:/app/uploads
+
+volumes:
+  uploads-data:
